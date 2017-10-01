@@ -1,0 +1,17 @@
+import scala.collection.JavaConverters._
+import org.mongodb.scala._
+import Helpers._
+
+object test_mongodb_driver extends App {
+  // Use a Connection String
+
+  // "mongodb://127.0.0.1:27017"  192.168.99.100
+  val mongoClient: MongoClient = MongoClient("mongodb://192.168.99.100:27017")
+
+  mongoClient.listDatabaseNames().printResults("Database Names")
+  val database: MongoDatabase = mongoClient.getDatabase("mydb")
+  val collection: MongoCollection[Document] = database.getCollection("bankmanager")
+  val f:SingleObservable[Document] = collection.find().first()
+  f.printHeadResult("This is a Document")
+  mongoClient.close()
+}
